@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Westgate Arena — Food Menu</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --brand-red: #E31B23;
+            --brand-dark: #9b1517;
+            --muted: #6c6c6c;
+            --card-radius: 12px;
+            --max-w: 1100px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+            background: #fff;
+            color: #222;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* top bar */
+        .topbar {
+            background: var(--brand-red);
+            color: #fff;
+            padding: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand .logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: #aba8a851;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .brand .title {
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: .4px
+        }
+
+        .brand .sub {
+            font-size: 12px;
+            opacity: .95
+        }
+
+        /* carousel */
+        .hero {
+            padding: 12px;
+            background: #f9f7f7;
+            display: flex;
+            justify-content: center
+        }
+
+        #heroCarousel {
+            border-radius: 12px;
+            overflow: hidden;
+            width: 100%;
+            max-width: var(--max-w);
+            background: #f8f3f3;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        .carousel-item {
+            min-height: 180px;
+            padding: 0;
+            position: relative;
+            /* needed so the image can be absolute inside */
+        }
+
+        /* full-bleed background image for each slide */
+        .carousel-bg {
+            position: absolute;
+            inset: 0;
+            /* top:0; right:0; bottom:0; left:0 */
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            z-index: 0;
+            filter: brightness(0.58) saturate(0.95);
+            /* darken a little for legibility */
+            transition: transform .6s ease;
+        }
+
+        /* slight parallax/scale on active slide for motion */
+        .carousel-item.active .carousel-bg {
+            transform: scale(1.03);
+        }
+
+        /* ensure promo content sits above the bg */
+        .carousel-item .promo {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px;
+            gap: 12px;
+            color: #fff;
+        }
+
+        /* readable left panel */
+        .carousel-item .promo .left {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0.18));
+        }
+
+        /* small label art should be visible */
+        .carousel-item .promo .art {
+            z-index: 1;
+            color: #fff;
+            font-weight: 900;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 10px 14px;
+            border-radius: 10px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        /* controls (search + categories) */
+        .controls {
+            padding: 12px;
+            max-width: var(--max-w);
+            margin: 6px auto 0;
+        }
+
+        .search {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: #1d1c1c;
+            border-radius: 10px;
+            padding: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .search input {
+            border: 0;
+            outline: none;
+            padding: 6px 8px;
+            flex: 1;
+            font-size: 15px
+        }
+
+        .categories {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+            overflow: auto;
+            padding-bottom: 6px;
+        }
+
+        .categories::-webkit-scrollbar {
+            height: 8px
+        }
+
+        .cat {
+            background: #fff;
+            padding: 8px 12px;
+            border-radius: 999px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+            font-weight: 700;
+            color: var(--muted);
+            white-space: nowrap;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.04)
+        }
+
+        .cat.active {
+            background: var(--brand-red);
+            color: #fff;
+            box-shadow: 0 18px 36px rgba(227, 27, 35, 0.12)
+        }
+
+        /* main content continuous sections */
+        main {
+            padding: 14px 12px 80px;
+            max-width: var(--max-w);
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px
+        }
+
+        .section-header h3 {
+            margin: 0;
+            font-size: 1.05rem;
+            color: var(--brand-red);
+            font-weight: 800
+        }
+
+        .section-sub {
+            color: var(--muted);
+            font-weight: 600;
+            font-size: .92rem
+        }
+
+        /* product grid: 2 per row mobile-first */
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px
+        }
+
+        .card {
+            flex: 0 0 calc(50% - 12px);
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06);
+            transition: transform .22s ease, box-shadow .22s ease, opacity .25s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            opacity: 1;
+        }
+
+        .card.hidden {
+            opacity: 0;
+            transform: scale(.99);
+            pointer-events: none;
+            height: 0;
+            overflow: hidden
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 22px 48px rgba(0, 0, 0, 0.12)
+        }
+
+        .thumb {
+            width: 100%;
+            height: 120px;
+            background: #f3f2f1;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .card-body {
+            padding: 10px 12px;
+            display: flex;
+            gap: 6px;
+            flex-direction: column;
+            min-height: 110px
+        }
+
+        .name {
+            font-weight: 800;
+            font-size: .98rem;
+            color: #222;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .desc {
+            color: var(--muted);
+            font-size: .88rem;
+            height: 3   .4em;
+            overflow: hidden;
+            margin-top: 2px
+        }
+
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto
+        }
+
+        .price {
+            color: var(--brand-red);
+            font-weight: 900
+        }
+
+        /* list style for long lists (full width) */
+        .list {
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: opacity .2s
+        }
+
+        .list.hidden {
+            opacity: 0;
+            transform: scale(.99);
+            pointer-events: none;
+            height: 0;
+            overflow: hidden
+        }
+
+        /* modal */
+        .modal-img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05)
+        }
+        .modal{
+            color: black;
+            ;
+        }
+
+        footer {
+            text-align: center;
+            padding: 16px 8px;
+            color: #777;
+            font-size: .92rem;
+            margin-top: 12px
+        }
+
+        @media(min-width:900px) {
+            .card {
+                flex: 0 0 calc(33.333% - 12px);
+                max-width: calc(33.333% - 12px)
+            }
+
+            .thumb {
+                height: 150px
+            }
+
+            .carousel-item {
+                min-height: 220px;
+                height: 320px;
+            }
+
+            .carousel-bg {
+                height: 320px;
+            }
+        }
+
+        /* small niceties */
+        .hint {
+            padding: 14px;
+            background: #fff;
+            border-radius: 10px;
+            text-align: center;
+            color: var(--muted);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04)
+        }
+
+        /* fade helpers */
+        .fade-out {
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity .28s, transform .28s
+        }
+
+        .fade-in {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity .28s, transform .28s
+        }
+
+        /* prevent scroll jump */
+        html,
+        body {
+            overflow-anchor: none;
+            scroll-behavior: smooth
+        }
+
+        /* add dark / light theme variables and overrides */
+        :root{
+      /* light mode defaults (existing look) */
+      --bg: #ffffff;
+      --text: #222222;
+      --muted: #6c6c6c;
+      --card-bg: #ffffff;
+      --panel-bg: #f8f3f3;
+      --topbar-bg: var(--brand-red);
+      --brand-red: #E31B23;
+      --shadow: rgba(0,0,0,0.06);
+      --accent-text: #E31B23;
+      
+    }
+
+    .dark {
+      --bg: url(/image/52459400-ab47-43f6-aed1-37007c2a6d1a.jpg) no-repeat center center fixed;
+      --text: #eef2f6;
+      --muted: #98a0ab;
+      --card-bg: #07101a;
+      --panel-bg: linear-gradient(180deg, rgba(241, 10, 10, 0), transparent);
+      --topbar-bg: #120304;
+      --brand-red: #ff6b6b;
+      --shadow: rgba(0,0,0,0.6);
+      --accent-text: #ff8a80;
+      /* --brand-logo {
+            background: #292828e7;
+        } */
+    }
+
+    /* apply theme variables to key elements (placed after original rules for specificity) */
+    body { background: var(--bg); color: var(--text); transition: background .24s ease, color .24s ease;  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;       /* ensure the image covers desktop */
+  background-attachment: fixed;}
+    #heroCarousel { background: var(--panel-bg); box-shadow: 0 10px 30px var(--shadow); }
+    .topbar { background: var(--topbar-bg); color: #fff; transition: background .24s ease; }
+    .cat { background: var(--card-bg); color: var(--muted); border-color: rgba(0,0,0,0.04); }
+    .cat.active { background: var(--brand-red); color: #fff; box-shadow: 0 18px 36px rgba(227, 27, 35, 0.12); }
+    .card, .list, .hint { background: var(--card-bg); color: var(--text); box-shadow: 0 8px 28px var(--shadow); transition: background .24s, color .24s, box-shadow .24s; }
+    .name { color: var(--text); }
+    .desc, .section-sub { color: var(--muted); }
+
+    /* toggle button */
+    .theme-toggle-wrap { display:flex; align-items:center; gap:8px; }
+    #themeToggle{
+      border-radius:10px;
+      padding:8px 10px;
+      background: rgba(255,255,255,0.04);
+      border:1px solid rgba(0,0,0,0.06);
+      color: inherit;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      transition: transform .12s ease, background .12s;
+    }
+    #themeToggle:active{ transform: scale(.98); }
+    .dark #themeToggle { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.06); }
+    /* small icon sizing */
+    #themeIcon { width:16px; height:16px; display:inline-block; font-size:16px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- header -->
+    <header class="topbar">
+        <div class="container d-flex align-items-center justify-content-between">
+            <div class="brand">
+                <div class="logo"><img src="/image/ChatGPT Image Sep 22, 2025, 10_34_13 PM.png" alt="logo"></div>
+                <div>
+                    <div class="title">WESTGATE ARENA HOTEL &amp; SUITE</div>
+                    <div class="sub">Food Menu</div>
+                </div>
+            </div>
+
+            <!-- theme toggle -->
+            <div class="theme-toggle-wrap">
+                <button id="themeToggle" class="btn btn-sm" aria-label="Toggle theme" title="Toggle dark / light">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- carousel -->
+    <section class="hero">
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000"
+            style="width:100%; max-width:var(--max-w);">
+            <!-- pagination dots (generated by JS) -->
+            <div id="carouselIndicators" class="carousel-indicators" aria-hidden="false"></div>
+
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="carousel-bg" src="/image/rice.png" alt="Weekend special — Westgate">
+                    <div class="promo">
+                        <div class="left">
+                            <h4>Weekend Special</h4>
+                            <p>50% off selected mains — taste the Westgate flavour.</p>
+                        </div>
+                        <div class="art">50% OFF</div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img class="carousel-bg" src="/image/ofada.jpg" alt="Top picks — Westgate">
+                    <div class="promo">
+                        <div class="left">
+                            <h4>Top Picks</h4>
+                            <p>Jollof Rice Fiesta & Seafood Okra — chef's recommendations.</p>
+                        </div>
+                        <div class="art">Chef</div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img class="carousel-bg" src="/image/nkwobi-.png" alt="Fresh & Local">
+                    <div class="promo">
+                        <div class="left">
+                            <h4>Fresh & Local</h4>
+                            <p>Native rice, soups and house specials made daily.</p>
+                        </div>
+                        <div class="art">Local</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- controls (search + categories) -->
+    <div class="controls">
+        <div class="search">
+            <span style="color:var(--muted); padding:6px"><i class="fa fa-search"></i></span>
+            <input id="search" placeholder="Search dishes — e.g. 'Jollof', 'Pepper Soup', 'Spicy Turkey'">
+            <button id="clearSearch" class="btn btn-light btn-sm" type="button"
+                style="border-radius:8px;border:1px solid rgba(0,0,0,0.06)">Clear</button>
+        </div>
+
+        <div class="categories" id="categories" aria-hidden="false">
+            <!-- category buttons injected by JS -->
+        </div>
+    </div>
+
+    <!-- main continuous content -->
+    <main id="main">
+        <!-- sections inserted here -->
+    </main>
+
+    <footer>© WESTGATE ARENA HOTEL &amp; SUITE</footer>
+
+    <!-- dish modal -->
+    <div class="modal fade" id="dishModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <img id="modalImg" class="modal-img" src="/image/default.jpg" alt="">
+                <div class="modal-body">
+                    <h4 id="modalName"></h4>
+                    <div id="modalSection" style="color:var(--muted); font-weight:700; margin-bottom:8px"></div>
+                    <p id="modalDesc" class="text-muted mb-3"></p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="h4 text-danger" id="modalPrice"></div>
+                        <div><button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        /* ====================
+           DATA: Food-only menu
+           ==================== */
+
+        const DEFAULT_IMG = '/image/default.jpg';
+
+        /* MENU is organized into sections (only food)
+           Prices already include "₦" and commas per your instruction */
+        const MENU = {
+            "Top Picks": [
+                { type: 'card', name: 'Jollof Rice Fiesta', desc: 'Smoky jollof with prawns & chicken, served with coleslaw.', price: '₦15,000', img: '' },
+                { type: 'card', name: 'Seafood Okra', desc: 'Okra stew loaded with prawns & fish.', price: '₦20,000', img: '' },
+                { type: 'card', name: 'Spicy Turkey', desc: 'Well-seasoned spicy turkey, hotel-style.', price: '₦10,500', img: '' },
+                 { type: 'card', name: 'Jollof Rice Fiesta', desc: 'Smoky jollof with prawns & chicken, served with coleslaw.', price: '₦15,000', img: '' },
+            ],
+
+            "Breakfast & Light Meals": [
+                { type: 'card', name: 'Yam & Egg Sauce', desc: 'Fluffy yam served with savory egg sauce.', price: '₦4,500', img: '' },
+                { type: 'card', name: 'Plantain Omelette', desc: 'Ripe plantain folded into a soft omelette.', price: '₦4,000', img: '' },
+                { type: 'card', name: 'Chicken & Chips', desc: 'Juicy chicken served with crispy chips.', price: '₦10,000', img: '' },
+                { type: 'card', name: 'Egg & Bread', desc: 'Two eggs with bread slices.', price: '₦2,500' }
+            ],
+
+            "Rice Dishes": [
+                { type: 'card', name: 'Jollof Rice (With Protein)', desc: 'Classic smoky jollof served with choice protein.', price: '₦12,000', img: '' },
+                { type: 'card', name: 'Coconut Rice', desc: 'Fragrant rice cooked with coconut milk.', price: '₦12,000', img: '' },
+                { type: 'card', name: 'Ofada Rice (Traditional Sauce)', desc: 'Local ofada rice with spicy sauce & protein.', price: '₦12,000', img: '' },
+                { type: 'card', name: 'Plain White Rice', desc: 'Steamed white rice.', price: '₦2,500' }
+            ],
+
+            "Pasta & Noodles": [
+                { type: 'card', name: 'Jollof Spaghetti', desc: 'Spaghetti cooked in jollof-style sauce.', price: '₦12,000', img: '' },
+                { type: 'card', name: 'Indian Curry Chicken', desc: 'Diced chicken in curry sauce served with basmati rice.', price: '₦10,000', img: '' },
+                { type: 'card', name: 'Chicken Noodles', desc: 'Egg noodles tossed with shredded chicken & veggies.', price: '₦13,000', img: '' },
+                { type: 'card', name: 'Noodles & Eggs', desc: 'Noodles with two eggs and garden veggies.', price: '₦3,000' }
+            ],
+
+            "Pepper Soup": [
+                { type: 'card', name: 'Catfish Pepper Soup (Large)', desc: 'Large catfish simmered in aromatic pepper mix.', price: '₦40,000', img: '' },
+                { type: 'card', name: 'Goat Meat Pepper Soup', desc: 'Spicy goat meat broth with local herbs.', price: '₦9,500', img: '' },
+                { type: 'card', name: 'Assorted Pepper Soup', desc: 'Pepper soup with assorted meats.', price: '₦7,500', img: '' },
+                { type: 'card', name: 'Chicken Pepper Soup', desc: 'chicken pepper soup', price: '₦6,500' }
+            ],
+
+            "Spicy & Peppered": [
+                { type: 'card', name: 'Spicy Fish (Plate)', desc: 'Fried fish in spicy sauce, served with chips.', price: '₦11,000', img: '' },
+                { type: 'card', name: 'Spicy Goat Meat', desc: 'Well-seasoned goat with spicy sauce.', price: '₦11,000', img: '' },
+                { type: 'card', name: 'Spicy Gizzard', desc: 'Deep-fried gizzard in spicy seasoning.', price: '₦3,500' },
+                { type: 'card', name: 'Spicy Chicken Wings', desc: 'Chicken wings tossed in spicy sauce.', price: '₦4,500' }
+            ],
+
+            "Salads & Sides": [
+                { type: 'card', name: 'Greek Salad', desc: 'Lettuce, cucumber, tomatoes & feta.', price: '₦7,000', img: '' },
+                { type: 'card', name: 'Vegetable Coleslaw', desc: 'Crisp cabbage & carrot coleslaw.', price: '₦5,000', img: '' }
+            ],
+
+            "Swallows": [
+                { type: 'list', name: 'Pounded Yam', desc: 'Silky pounded yam for your soups.', price: '₦1,000' },
+                { type: 'list', name: 'Eba', desc: 'Garri swallow to pair with soups.', price: '₦1,000' },
+                { type: 'list', name: 'Semo', desc: 'freshly cooked semo.', price: '₦1,500' }
+            ],
+
+            "Proteins (Add-ons)": [
+                { type: 'list', name: 'Goat Meat', desc: 'Tender goat meat portion.', price: '₦9,000' },
+                { type: 'list', name: 'Shrimps', desc: 'Fresh shrimp portion.', price: '₦10,000' },
+                { type: 'list', name: 'Chicken', desc: 'Grilled or fried chicken portion.', price: '₦6,000' },
+                { type: 'list', name: 'Fish', desc: 'Fresh fish portion.', price: '₦8,000' },
+                { type: 'list', name: 'Beef', desc: 'Tender beef portion.', price: '₦7,000' }
+            ]
+        };
+
+        /* ================
+           Renderer & Logic
+           ================ */
+
+        const mainEl = document.getElementById('main');
+        const categoriesEl = document.getElementById('categories');
+        const searchEl = document.getElementById('search');
+        const clearBtn = document.getElementById('clearSearch');
+
+        const SECTIONS = Object.keys(MENU); // preserves order
+
+        // sanitize for HTML
+        function esc(s) { return String(s || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])); }
+
+        // build category buttons (All + each section)
+        function buildCategoryButtons() {
+            categoriesEl.innerHTML = '';
+            const allBtn = document.createElement('button');
+            allBtn.type = 'button';
+            allBtn.className = 'cat active';
+            allBtn.textContent = 'All';
+            allBtn.dataset.section = 'ALL';
+            categoriesEl.appendChild(allBtn);
+
+            SECTIONS.forEach(sec => {
+                if (sec === 'Top Picks') return; // optionally skip if you don't want as a top filter
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'cat';
+                btn.textContent = sec;
+                btn.dataset.section = sec;
+                categoriesEl.appendChild(btn);
+            });
+
+            // event delegation for category clicks
+            categoriesEl.addEventListener('click', (e) => {
+                const btn = e.target.closest('.cat');
+                if (!btn) return;
+                // mark active
+                categoriesEl.querySelectorAll('.cat').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+
+                const sec = btn.dataset.section;
+                if (sec === 'ALL') renderAllSections(); else filterToSection(sec);
+            });
+        }
+
+        // Render full continuous menu (All sections)
+        function renderAllSections() {
+            mainEl.innerHTML = '';
+            // Optionally render Top Picks first
+            if (MENU['Top Picks'] && MENU['Top Picks'].length) {
+                mainEl.appendChild(buildSection('Top Picks', MENU['Top Picks']));
+            }
+            SECTIONS.forEach(sectionName => {
+                if (sectionName === 'Top Picks') return;
+                mainEl.appendChild(buildSection(sectionName, MENU[sectionName] || []));
+            });
+            addReveal();
+        }
+
+        // Build a section DOM
+        function buildSection(name, items) {
+            const section = document.createElement('section');
+            section.className = 'section';
+            section.id = 'sec-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+            const header = document.createElement('div'); header.className = 'section-header';
+            header.innerHTML = `<div><h3>${esc(name)}</h3><div class="section-sub">Westgate Arena — ${esc(name)}</div></div>`;
+            section.appendChild(header);
+
+            // cards
+            const cards = items.filter(i => i.type === 'card');
+            if (cards.length) {
+                const grid = document.createElement('div'); grid.className = 'grid';
+                cards.forEach(it => grid.appendChild(buildCard(it, name)));
+                section.appendChild(grid);
+            }
+
+            // lists
+            const lists = items.filter(i => i.type === 'list');
+            if (lists.length) {
+                lists.forEach(it => {
+                    const r = document.createElement('div'); r.className = 'list';
+                    r.innerHTML = `<div><div class="title">${esc(it.name || it.title)}</div><div class="list-desc">${esc(it.desc || it.description || '')}</div></div><div class="price">${esc(it.price || '')}</div>`;
+                    r.addEventListener('click', () => openModal(it, name));
+                    section.appendChild(r);
+                });
+            }
+
+            return section;
+        }
+
+        // Build card element
+        function buildCard(item, sectionName) {
+            const card = document.createElement('article'); card.className = 'card';
+            const thumb = document.createElement('div'); thumb.className = 'thumb';
+            if (item.img && item.img.trim()) {
+                const img = document.createElement('img'); img.src = item.img; img.alt = item.name || ''; img.loading = 'lazy';
+                thumb.appendChild(img);
+            } else {
+                const ph = document.createElement('div');
+                ph.style.width = '100%'; ph.style.height = '100%'; ph.style.display = 'flex'; ph.style.alignItems = 'center'; ph.style.justifyContent = 'center';
+                ph.style.background = 'linear-gradient(180deg,#f3f3f3,#e9e9e9)'; ph.style.color = 'var(--brand-red)'; ph.style.fontWeight = '800';
+                ph.textContent = (item.name || '').split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+                thumb.appendChild(ph);
+            }
+            card.appendChild(thumb);
+
+            const body = document.createElement('div'); body.className = 'card-body';
+            const n = document.createElement('div'); n.className = 'name'; n.textContent = item.name || item.title || '';
+            const d = document.createElement('div'); d.className = 'desc'; d.textContent = item.desc || item.description || '';
+            const meta = document.createElement('div'); meta.className = 'meta';
+            const price = document.createElement('div'); price.className = 'price'; price.textContent = item.price || '';
+            meta.appendChild(document.createElement('div')); meta.appendChild(price);
+
+            body.appendChild(n); body.appendChild(d); body.appendChild(meta);
+            card.appendChild(body);
+
+            card.addEventListener('click', () => openModal(item, sectionName));
+            return card;
+        }
+
+        // Filter to a single section (show only that category, not scroll)
+        function filterToSection(sectionName) {
+            // fade out existing, then replace content with just the section for smoother UX
+            const old = mainEl.querySelectorAll('.section');
+            old.forEach(o => { o.classList.add('fade-out'); });
+
+            setTimeout(() => {
+                mainEl.innerHTML = '';
+                // show top picks if the selected section is Top Picks or All? Here we show only the chosen
+                const items = MENU[sectionName] || [];
+                mainEl.appendChild(buildSection(sectionName, items));
+                addReveal();
+            }, 260);
+        }
+
+        // Search across all menu items (keeps current filter; if filtered to one section, search results appear within that view)
+        function performSearch(q) {
+            q = (q || '').trim().toLowerCase();
+            const activeCatBtn = categoriesEl.querySelector('.cat.active');
+            const activeSection = activeCatBtn ? activeCatBtn.dataset.section : 'ALL';
+
+            // if "ALL" show all sections but filtered by search term
+            if (!q) {
+                if (activeSection === 'ALL') renderAllSections();
+                else filterToSection(activeSection);
+                return;
+            }
+
+            // gather matches
+            const matches = {};
+            Object.keys(MENU).forEach(sec => {
+                const arr = (MENU[sec] || []).filter(it => {
+                    const name = (it.name || it.title || '').toLowerCase();
+                    const desc = (it.desc || it.description || '').toLowerCase();
+                    const tags = (it.tags || []).join(' ').toLowerCase();
+                    return name.includes(q) || desc.includes(q) || tags.includes(q);
+                });
+                if (arr.length) matches[sec] = arr;
+            });
+
+            // If activeSection is not ALL, only show results from that section
+            mainEl.innerHTML = '';
+            if (activeSection !== 'ALL') {
+                const list = matches[activeSection] || [];
+                if (!list.length) { mainEl.innerHTML = '<div class="section"><div class="hint">No results found.</div></div>'; return; }
+                mainEl.appendChild(buildSection(activeSection, list));
+                addReveal();
+                return;
+            }
+
+            // if ALL: render each matching section
+            const sections = Object.keys(matches);
+            if (sections.length === 0) {
+                mainEl.innerHTML = '<div class="section"><div class="hint">No results found.</div></div>';
+                return;
+            }
+            sections.forEach(sec => mainEl.appendChild(buildSection(sec, matches[sec])));
+            addReveal();
+        }
+
+        /* Modal details */
+        function openModal(item, sectionName) {
+            const modalEl = document.getElementById('dishModal');
+            const modalImg = document.getElementById('modalImg');
+            const modalName = document.getElementById('modalName');
+            const modalSection = document.getElementById('modalSection');
+            const modalDesc = document.getElementById('modalDesc');
+            const modalPrice = document.getElementById('modalPrice');
+
+            modalImg.src = item.img && item.img.trim() ? item.img : DEFAULT_IMG;
+            modalName.textContent = item.name || item.title || '';
+            modalSection.textContent = sectionName || '';
+            modalDesc.textContent = item.desc || item.description || '';
+            modalPrice.textContent = item.price || '';
+
+            const bs = new bootstrap.Modal(modalEl);
+            bs.show();
+        }
+
+        /* reveal / intersection observer for gentle reveals */
+        let observer;
+        function addReveal() {
+            const nodes = document.querySelectorAll('.card, .list, .section-header');
+            if ('IntersectionObserver' in window) {
+                if (observer) observer.disconnect();
+                observer = new IntersectionObserver((entries) => {
+                    entries.forEach(en => {
+                        if (en.isIntersecting) {
+                            en.target.classList.add('fade-in');
+                            en.target.classList.remove('fade-out');
+                            observer.unobserve(en.target);
+                        }
+                    });
+                }, { threshold: 0.08 });
+                nodes.forEach(n => {
+                    n.classList.remove('fade-in'); n.classList.remove('fade-out');
+                    observer.observe(n);
+                });
+            } else {
+                nodes.forEach(n => n.classList.add('fade-in'));
+            }
+        }
+
+        /* init */
+        document.addEventListener('DOMContentLoaded', () => {
+            buildCategoryButtons();
+            renderAllSections();
+            addReveal();
+
+            // generate carousel indicators (dots) from the slides
+            (function createCarouselIndicators(){
+                const carousel = document.getElementById('heroCarousel');
+                const indicators = document.getElementById('carouselIndicators');
+                if (!carousel || !indicators) return;
+                const items = carousel.querySelectorAll('.carousel-item');
+                indicators.innerHTML = '';
+                items.forEach((it, idx) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.setAttribute('data-bs-target', '#heroCarousel');
+                    btn.setAttribute('data-bs-slide-to', idx);
+                    if (idx === 0) btn.classList.add('active');
+                    btn.setAttribute('aria-label', 'Slide ' + (idx + 1));
+                    indicators.appendChild(btn);
+                });
+            })();
+
+            // wire search
+            searchEl.addEventListener('input', e => performSearch(e.target.value));
+            clearBtn.addEventListener('click', () => { searchEl.value = ''; performSearch(''); });
+
+            /* THEME: dark / light */
+            const THEME_KEY = 'wg_theme';
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+
+            function applyTheme(mode){
+                if(mode === 'dark'){
+                    document.documentElement.classList.add('dark');
+                    themeIcon.className = 'fa-solid fa-sun';
+                    themeIcon.setAttribute('title','Switch to light mode');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    themeIcon.className = 'fa-solid fa-moon';
+                    themeIcon.setAttribute('title','Switch to dark mode');
+                }
+            }
+
+            function initTheme(){
+                const saved = localStorage.getItem(THEME_KEY);
+                if(saved === 'dark' || saved === 'light'){
+                    applyTheme(saved);
+                    return;
+                }
+                // no saved pref: respect system preference
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                applyTheme(prefersDark ? 'dark' : 'light');
+            }
+
+            if(themeToggle){
+                themeToggle.addEventListener('click', ()=>{
+                    const isDark = document.documentElement.classList.contains('dark');
+                    const next = isDark ? 'light' : 'dark';
+                    applyTheme(next);
+                    localStorage.setItem(THEME_KEY, next);
+                });
+            }
+            initTheme();
+            // end THEME
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,270 @@
+/* Modern hotel menu stylesheet
+   Clean, responsive, accessible — cards, pills, header and subtle motion */
+:root{
+  --bg:#0b0f14;
+  --panel:#07101a;
+  --muted:#98a0ab;
+  --card:#0f1720;
+  --accent:#ff6b6b;
+  --accent-2:#ff9a8a;
+  --glass: rgba(255,255,255,0.04);
+  --radius:14px;
+  --max-width:1100px;
+  --text:#eef2f6;
+  --success:#48f278;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+  background: linear-gradient(180deg,#031022 0%, #071226 60%);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:28px 18px;
+}
+
+/* outer container used in HTML */
+.header, .glass {
+  width:100%;
+  max-width:var(--max-width);
+  margin:0 auto;
+}
+
+/* initial spinner overlay area */
+.spinal{
+  width:100%;
+  max-width:var(--max-width);
+  margin:0 auto 18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#spi img, .logo img{
+  display:block;
+  width:120px;
+  height:120px;
+  object-fit:cover;
+  border-radius:50%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  border: 4px solid rgba(255,255,255,0.04);
+}
+
+/* main site wrapper (hidden until JS shows #spinner) */
+#spinner{
+  width:100%;
+  max-width:var(--max-width);
+  margin:0 auto;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow: 0 12px 40px rgba(2,6,23,0.6);
+  border:1px solid rgba(255,255,255,0.04);
+}
+
+/* header */
+.header{
+  padding:18px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  border-bottom:1px solid rgba(255,255,255,0.03);
+}
+.header-inner{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  width:100%;
+  justify-content:space-between;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.logo{
+  width:64px;
+  height:64px;
+  border-radius:12px;
+  overflow:hidden;
+  background: linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 8px 26px rgba(255,90,107,0.08);
+  flex-shrink:0;
+}
+.logo img{ width:100%; height:100%; object-fit:cover; display:block; border-radius:10px; }
+.brand-text strong{ display:block; font-size:14px; letter-spacing:0.6px; color:var(--text); }
+.brand-text small{ display:block; color:var(--muted); font-size:12px; }
+
+/* tabs for FOOD / DRINKS */
+.tabs{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.tab{
+  background:transparent;
+  border:0;
+  padding:8px 14px;
+  border-radius:999px;
+  color:var(--muted);
+  font-weight:700;
+  letter-spacing:0.6px;
+  cursor:pointer;
+  transition: all 180ms ease;
+  outline:none;
+}
+.tab:focus{ box-shadow: 0 0 0 4px rgba(255,107,107,0.06); }
+.tab.active{
+  color:#fff;
+  background: linear-gradient(90deg,var(--accent),var(--accent-2));
+  box-shadow: 0 10px 26px rgba(255,90,107,0.12);
+}
+
+/* pills (category horizontal scroller) */
+.pills-wrap{
+  padding:12px 18px;
+  border-bottom:1px solid rgba(255,255,255,0.02);
+  background: linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
+}
+.pills{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:6px;
+  -webkit-overflow-scrolling:touch;
+}
+.pill{
+  white-space:nowrap;
+  border-radius:999px;
+  padding:8px 12px;
+  background:rgba(255,255,255,0.02);
+  color:var(--muted);
+  border:1px solid rgba(255,255,255,0.02);
+  cursor:pointer;
+  transition: all 160ms ease;
+  font-weight:600;
+  font-size:13px;
+}
+.pill:hover{ transform:translateY(-3px); }
+.pill.active{
+  background: linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:#fff;
+  box-shadow: 0 8px 26px rgba(255,90,107,0.08);
+}
+
+/* main content area */
+.content{
+  padding:20px;
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:18px;
+  align-items:start;
+}
+
+/* menu card */
+.menu-card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  border-radius:12px;
+  padding:12px;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  border:1px solid rgba(255,255,255,0.03);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.menu-card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 18px 60px rgba(2,6,23,0.6);
+}
+.menu-card .thumb{
+  width:110px;
+  min-width:110px;
+  height:80px;
+  border-radius:10px;
+  overflow:hidden;
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.2));
+  display:block;
+  flex-shrink:0;
+}
+.menu-card .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.menu-card .meta{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.menu-card h4{ margin:0; font-size:16px; color:var(--text); }
+.menu-card p.desc{ margin:0; color:var(--muted); font-size:13px; }
+.menu-card .row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.price{
+  background: linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:#fff;
+  padding:6px 10px;
+  border-radius:8px;
+  font-weight:800;
+  font-size:14px;
+  box-shadow: 0 6px 18px rgba(255,90,107,0.08);
+}
+
+/* subtle tags */
+.tag{
+  font-size:12px;
+  color:var(--muted);
+  border-radius:6px;
+  padding:4px 8px;
+  background: rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.02);
+}
+
+/* footer */
+.footer{
+  padding:18px;
+  text-align:center;
+  color:var(--muted);
+  border-top:1px solid rgba(255,255,255,0.02);
+}
+
+/* upload / loader / empty states */
+.empty{
+  color:var(--muted);
+  text-align:center;
+  padding:40px;
+}
+
+/* inline messages inside modal-like area */
+.upload-errors, .success {
+  padding:10px 12px;
+  border-radius:10px;
+  margin:10px 0;
+  font-weight:600;
+  transition: opacity .5s ease, transform .4s ease;
+}
+.upload-errors{ background: rgba(249,26,5,0.06); color: #ffb3b0; border:1px solid rgba(249,26,5,0.12); }
+.success{ background: rgba(72,242,120,0.04); color: var(--success); border:1px solid rgba(72,242,120,0.07); }
+
+/* fade-out utility */
+.fade-out{ opacity:0; transform:translateY(-6px); pointer-events:none; }
+
+/* responsive */
+@media (max-width:920px){
+  .content{ grid-template-columns: 1fr; }
+  .header-inner{ flex-direction:column; align-items:flex-start; gap:12px; }
+  .brand-text strong{ font-size:15px }
+  .pills{ padding-left:6px; }
+  .logo{ width:56px; height:56px }
+}
