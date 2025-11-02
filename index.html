@@ -15,7 +15,7 @@
             --brand-dark: #9b1517;
             --muted: #6c6c6c;
             --card-radius: 12px;
-            --max-w: 1100px;
+            --max-w: 1110px;
         }
 
         * {
@@ -94,7 +94,7 @@
         }
 
         .carousel-item {
-            min-height: 180px;
+            min-height: 280px;
             padding: 0;
             position: relative;
             /* needed so the image can be absolute inside */
@@ -123,6 +123,7 @@
         /* ensure promo content sits above the bg */
         .carousel-item .promo {
             position: relative;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
             z-index: 1;
             display: flex;
             align-items: center;
@@ -135,7 +136,7 @@
         /* readable left panel */
         .carousel-item .promo .left {
             flex: 1;
-            padding: 12px 16px;
+            padding: 16px 20px;
             border-radius: 10px;
             background: linear-gradient(180deg, rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0.18));
         }
@@ -148,7 +149,7 @@
             background: rgba(0, 0, 0, 0.35);
             padding: 10px 14px;
             border-radius: 10px;
-            min-width: 80px;
+            min-width: 85px;
             text-align: center;
         }
 
@@ -383,7 +384,7 @@
             }
 
             .carousel-bg {
-                height: 320px;
+                height: 330px;
             }
         }
 
@@ -511,13 +512,14 @@
 
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="carousel-bg" src="/image/rice.png" alt="Weekend special — Westgate">
+                    <img class="carousel-bg" src="/image/buffet.png" alt="Weekend special — Westgate">
                     <div class="promo">
                         <div class="left">
                             <h4>Weekend Special</h4>
-                            <p>50% off selected mains — taste the Westgate flavour.</p>
+                            <p>Special Buffet — taste the Westgate flavour.</p>
+                            <p>Saturday & Sunday</p>
                         </div>
-                        <div class="art">50% OFF</div>
+                        <div class="art">Bellefull Weekend</div>
                     </div>
                 </div>
 
@@ -528,7 +530,7 @@
                             <h4>Top Picks</h4>
                             <p>Jollof Rice Fiesta & Seafood Okra — chef's recommendations.</p>
                         </div>
-                        <div class="art">Chef</div>
+                        <div class="art">Chef's Picks</div>
                     </div>
                 </div>
 
@@ -539,7 +541,7 @@
                             <h4>Fresh & Local</h4>
                             <p>Native rice, soups and house specials made daily.</p>
                         </div>
-                        <div class="art">Local</div>
+                        <div class="art">Fresh & Local</div>
                     </div>
                 </div>
             </div>
@@ -599,50 +601,50 @@
            Prices already include "₦" and commas per your instruction */
         const MENU = {
             "Top Picks": [
-                { type: 'card', name: 'Jollof Rice Fiesta', desc: 'Smoky jollof with prawns & chicken, served with coleslaw.', price: '₦15,000', img: '' },
-                { type: 'card', name: 'Seafood Okra', desc: 'Okra stew loaded with prawns & fish.', price: '₦20,000', img: '' },
-                { type: 'card', name: 'Spicy Turkey', desc: 'Well-seasoned spicy turkey, hotel-style.', price: '₦10,500', img: '' },
-                 { type: 'card', name: 'Jollof Rice Fiesta', desc: 'Smoky jollof with prawns & chicken, served with coleslaw.', price: '₦15,000', img: '' },
+                { type: 'card', name: 'Jollof Rice Fiesta', desc: 'Smoky jollof with prawns & chicken, served with coleslaw.', price: '₦15,000', img: 'image/Jollof_Rice_with_Stew.jpg' },
+                { type: 'card', name: 'Seafood Okra', desc: 'Okra stew loaded with prawns & fish.', price: '₦20,000', img: 'image/seafood.jpg' },
+                { type: 'card', name: 'Spicy Turkey', desc: 'Well-seasoned spicy turkey, hotel-style.', price: '₦10,500', img: 'image/turkey.jpeg' },
+                 { type: 'card', name: 'Egusi soup', desc: 'Fully loaded & spicy egusi soup.', price: '₦15,000', img: 'image/egusi.webp' },
             ],
 
             "Breakfast & Light Meals": [
-                { type: 'card', name: 'Yam & Egg Sauce', desc: 'Fluffy yam served with savory egg sauce.', price: '₦4,500', img: '' },
-                { type: 'card', name: 'Plantain Omelette', desc: 'Ripe plantain folded into a soft omelette.', price: '₦4,000', img: '' },
-                { type: 'card', name: 'Chicken & Chips', desc: 'Juicy chicken served with crispy chips.', price: '₦10,000', img: '' },
-                { type: 'card', name: 'Egg & Bread', desc: 'Two eggs with bread slices.', price: '₦2,500' }
+                { type: 'card', name: 'Yam & Egg Sauce', desc: 'Fluffy yam served with savory egg sauce.', price: '₦4,500', img: 'image/yamegg.jpg' },
+                { type: 'card', name: 'Plantain Omelette', desc: 'Ripe plantain folded into a soft omelette.', price: '₦4,000', img: 'image/PlantainOmelet.webp' },
+                { type: 'card', name: 'Chicken & Chips', desc: 'Juicy chicken served with crispy chips.', price: '₦10,000', img: 'image/chicken-and-chips.jpeg' },
+                { type: 'card', name: 'Egg & Bread', desc: 'Two eggs with bread slices.', price: '₦2,500', img: 'image/bread.jpg' }
             ],
 
             "Rice Dishes": [
-                { type: 'card', name: 'Jollof Rice (With Protein)', desc: 'Classic smoky jollof served with choice protein.', price: '₦12,000', img: '' },
-                { type: 'card', name: 'Coconut Rice', desc: 'Fragrant rice cooked with coconut milk.', price: '₦12,000', img: '' },
-                { type: 'card', name: 'Ofada Rice (Traditional Sauce)', desc: 'Local ofada rice with spicy sauce & protein.', price: '₦12,000', img: '' },
-                { type: 'card', name: 'Plain White Rice', desc: 'Steamed white rice.', price: '₦2,500' }
+                { type: 'card', name: 'Jollof Rice (With Protein)', desc: 'Classic smoky jollof served with choice protein.', price: '₦12,000', img: 'image/jellof2.jpg' },
+                { type: 'card', name: 'Coconut Rice', desc: 'Fragrant rice cooked with coconut milk.', price: '₦12,000', img: 'image/coconut-rice.webp' },
+                { type: 'card', name: 'Ofada Rice (Traditional Sauce)', desc: 'Local ofada rice with spicy sauce & protein.', price: '₦12,000', img: 'image/ofada.jpg' },
+                { type: 'card', name: 'Plain White Rice', desc: 'Steamed white rice.', price: '₦2,500', img: 'image/whiterice.jpeg' }
             ],
 
             "Pasta & Noodles": [
-                { type: 'card', name: 'Jollof Spaghetti', desc: 'Spaghetti cooked in jollof-style sauce.', price: '₦12,000', img: '' },
-                { type: 'card', name: 'Indian Curry Chicken', desc: 'Diced chicken in curry sauce served with basmati rice.', price: '₦10,000', img: '' },
-                { type: 'card', name: 'Chicken Noodles', desc: 'Egg noodles tossed with shredded chicken & veggies.', price: '₦13,000', img: '' },
-                { type: 'card', name: 'Noodles & Eggs', desc: 'Noodles with two eggs and garden veggies.', price: '₦3,000' }
+                { type: 'card', name: 'Jollof Spaghetti', desc: 'Spaghetti cooked in jollof-style sauce.', price: '₦12,000', img: 'image/jollof-spaghetti-24.jpg' },
+                { type: 'card', name: 'Indian Curry Chicken', desc: 'Diced chicken in curry sauce served with basmati rice.', price: '₦10,000', img: 'image/chickencurry-3.jpg' },
+                { type: 'card', name: 'Chicken Noodles', desc: 'Egg noodles tossed with shredded chicken & veggies.', price: '₦13,000', img: 'image/noodles.jpg' },
+                { type: 'card', name: 'Noodles & Eggs', desc: 'Noodles with two eggs and garden veggies.', price: '₦3,000', img: 'image/noodle2.jpg' }
             ],
 
             "Pepper Soup": [
-                { type: 'card', name: 'Catfish Pepper Soup (Large)', desc: 'Large catfish simmered in aromatic pepper mix.', price: '₦40,000', img: '' },
-                { type: 'card', name: 'Goat Meat Pepper Soup', desc: 'Spicy goat meat broth with local herbs.', price: '₦9,500', img: '' },
-                { type: 'card', name: 'Assorted Pepper Soup', desc: 'Pepper soup with assorted meats.', price: '₦7,500', img: '' },
-                { type: 'card', name: 'Chicken Pepper Soup', desc: 'chicken pepper soup', price: '₦6,500' }
+                { type: 'card', name: 'Catfish Pepper Soup (Large)', desc: 'Large catfish simmered in aromatic pepper mix.', price: '₦40,000', img: 'image/catfish_soup.JPG' },
+                { type: 'card', name: 'Goat Meat Pepper Soup', desc: 'Spicy goat meat broth with local herbs.', price: '₦9,500', img: 'image/goatmeat.jpg' },
+                { type: 'card', name: 'Assorted Pepper Soup', desc: 'Pepper soup with assorted meats.', price: '₦7,500', img: 'image/Assorted-Meat-Pepper-Soup-1.jpg' },
+                { type: 'card', name: 'Chicken Pepper Soup', desc: 'chicken pepper soup', price: '₦6,500', img: 'image/chiken_soup.webp' }
             ],
 
             "Spicy & Peppered": [
-                { type: 'card', name: 'Spicy Fish (Plate)', desc: 'Fried fish in spicy sauce, served with chips.', price: '₦11,000', img: '' },
-                { type: 'card', name: 'Spicy Goat Meat', desc: 'Well-seasoned goat with spicy sauce.', price: '₦11,000', img: '' },
-                { type: 'card', name: 'Spicy Gizzard', desc: 'Deep-fried gizzard in spicy seasoning.', price: '₦3,500' },
-                { type: 'card', name: 'Spicy Chicken Wings', desc: 'Chicken wings tossed in spicy sauce.', price: '₦4,500' }
+                { type: 'card', name: 'Spicy Fish (Plate)', desc: 'Fried fish in spicy sauce, served with chips.', price: '₦11,000', img: 'image/grilled-tilapia-fish.jpg' },
+                { type: 'card', name: 'Spicy Goat Meat', desc: 'Well-seasoned goat with spicy sauce.', price: '₦11,000', img: 'image/spicygoat.jpg' },
+                { type: 'card', name: 'Spicy Gizzard', desc: 'Deep-fried gizzard in spicy seasoning.', price: '₦3,500', img: 'image/gizzad.jpg' },
+                { type: 'card', name: 'Spicy Chicken Wings', desc: 'Chicken wings tossed in spicy sauce.', price: '₦4,500', img: 'image/wings.jpg' }
             ],
 
             "Salads & Sides": [
-                { type: 'card', name: 'Greek Salad', desc: 'Lettuce, cucumber, tomatoes & feta.', price: '₦7,000', img: '' },
-                { type: 'card', name: 'Vegetable Coleslaw', desc: 'Crisp cabbage & carrot coleslaw.', price: '₦5,000', img: '' }
+                { type: 'card', name: 'Greek Salad', desc: 'Lettuce, cucumber, tomatoes & feta.', price: '₦7,000', img: 'image/salad.jpg' },
+                { type: 'card', name: 'Vegetable Coleslaw', desc: 'Crisp cabbage & carrot coleslaw.', price: '₦5,000', img: 'image/Coleslaw-Recipe-2.jpg' }
             ],
 
             "Swallows": [
